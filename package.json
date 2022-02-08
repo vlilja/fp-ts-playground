@@ -3,6 +3,9 @@
   "version": "0.0.1",
   "description": "Examples with fp-ts",
   "main": "index.ts",
+  "scripts": {
+    "validate-password": "ts-node ./src/passwordValidator/validators.ts"
+  },
   "repository": "git@github.com:vlilja/fp-ts-playground.git",
   "author": "valtteri.lilja@gmail.com",
   "license": "MIT",
