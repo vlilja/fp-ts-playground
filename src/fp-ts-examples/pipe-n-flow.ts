@@ -25,10 +25,18 @@ console.log('=================');
 
 console.log(pipe('fp-ts is', concatenate(' fun'), uppercase));
 
-const haveBeenLearningFpTsFor = flow(addOne, numberToString, (years) =>
-  pipe('I have been learning fp-ts for ', concatenate(years), concatenate(' years'))
+const haveBeenLearningFpTsFor = flow(
+  addOne,
+  numberToString,
+  (num) => concatenate(num)('I have been learning fp-ts for '),
+  concatenate(' years')
 );
 
 console.log(haveBeenLearningFpTsFor(3));
 
-console.log('Yell it out!!!', pipe(haveBeenLearningFpTsFor(3), uppercase, concatenate('!!!!')))
+console.log(
+  'Yell it out: ',
+  pipe(haveBeenLearningFpTsFor(3), uppercase, concatenate('!!!!'))
+);
+
+console.log(concatenate('foo')('bar'))
