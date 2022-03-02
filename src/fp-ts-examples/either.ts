@@ -1,6 +1,5 @@
 import { pipe } from 'fp-ts/function';
 import * as E from 'fp-ts/Either';
-import { Console } from 'console';
 
 const rollDice = (loaded: number = 0) =>
   Math.round(Math.random() * 5 + 1 + loaded);
@@ -10,41 +9,42 @@ const rollAtLeastThree = (loaded?: number) => {
   return roll >= 3 ? E.right(roll > 6 ? 6 : roll) : E.left(roll < 1 ? 1 : roll);
 };
 
-console.log(rollAtLeastThree(6)); // Succeed always
-console.log(rollAtLeastThree());
-console.log(rollAtLeastThree());
+const move = (moveBy: number) => {
+  console.log('I moved by ' + moveBy);
+  return moveBy;
+};
 
-const move = (moveBy: number) => { console.log('I moved by ' + moveBy); return moveBy};
-const rolledOnly = (roll: number) =>
-  console.log('Rolled ', roll);
+const rolledOnly = (roll: number) => console.log('Rolled only', roll);
+const turnSucceeded = (roll: number) => console.log('Successful turn');
+
 const shootRockets = (roll: number) => {
-  if(roll === 6) {
-    console.log('Shooting rockets too!!!');
-    return E.right(roll);
+  if (roll === 6) {
+    console.log('I rolled six so I shoot rockets too!');
   }
 
-  return E.left(roll);
-}
+  return roll;
+};
 
-
+console.log('=== I SUCCEED ALWAYS ===');
 const moveOnBoardLoaded = pipe(
   rollAtLeastThree(6),
   E.map(move),
-  E.chainW(shootRockets),
-  E.fold(rolledOnly, () => console.log('Done it all'))
+  E.map(shootRockets),
+  E.fold(rolledOnly, turnSucceeded)
 );
 
+console.log('=== I MAY SUCCEED ===');
 const moveOnBoard = pipe(
   rollAtLeastThree(),
   E.map(move),
-  E.chainW(shootRockets),
-  E.mapLeft(rolledOnly),
-  E.map(() => console.log('Done it all'))
+  E.map(shootRockets),
+  E.fold(rolledOnly, turnSucceeded)
 );
 
+console.log('==== I ALWAYS FAIL ====');
 const failingToMove = pipe(
   rollAtLeastThree(-6),
   E.map(move),
-  E.chainW(shootRockets),
+  E.map(shootRockets),
   E.mapLeft(rolledOnly)
 );

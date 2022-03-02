@@ -47,10 +47,12 @@ const res = pipe(
     font: { ...settings.font, face: 'Times new roman' },
   }),
   O.fold(
-    () => console.log('there is no spoon'),
+    () => console.log('there is no font face'),
     (settings) => settings
   )
 );
+
+console.log(res);
 
 const byTypingFlowIsCumbersome = flow<
   [number | null],

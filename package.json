@@ -2,9 +2,16 @@
   "name": "fp-ts-playground",
   "version": "0.0.1",
   "description": "Examples with fp-ts",
-  "main": "index.ts",
+  "main": "src/index.ts",
   "scripts": {
-    "validate-password": "ts-node ./src/passwordValidator/validators.ts"
+    "fp-ts:applicative": "ts-node ./src/fp-ts-examples/applicative.ts",
+    "fp-ts:pipe": "ts-node ./src/fp-ts-examples/pipe-n-flow.ts",
+    "fp-ts:option": "ts-node ./src/fp-ts-examples/option.ts",
+    "fp-ts:either": "ts-node ./src/fp-ts-examples/either.ts",
+    "validate-user": "ts-node ./src/mockApp/validation/userValidator.ts",
+    "save-user": "ts-node ./src/mockApp/db/saveUser.ts",
+    "register-user": "ts-node ./src/mockApp/registerUser.ts",
+    "flatmap": "ts-node ./src/flatmap.ts"
   },
   "repository": "git@github.com:vlilja/fp-ts-playground.git",
   "author": "valtteri.lilja@gmail.com",
@@ -12,7 +19,11 @@
   "private": true,
   "dependencies": {
     "fp-ts": "^2.11.8",
+    "io-ts": "^2.2.16",
     "ts-node": "^10.4.0",
     "typescript": "^4.5.5"
+  },
+  "devDependencies": {
+    "@types/node": "^17.0.17"
   }
 }

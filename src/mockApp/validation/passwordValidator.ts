@@ -2,11 +2,7 @@ import * as E from 'fp-ts/Either';
 import * as A from 'fp-ts/Array';
 import { pipe } from 'fp-ts/function';
 import { getSemigroup } from 'fp-ts/lib/ReadonlyNonEmptyArray';
-import { NonEmptyArray } from 'fp-ts/lib/NonEmptyArray';
-
-type Password = string;
-type ValidationError = string;
-type ValidatorFunction = (password: string) => boolean;
+import { validateWithErrorMessage } from './utils';
 
 const isLongerThan = (requiredLength: number) => (password: string) => {
   return password.length >= requiredLength;
@@ -19,13 +15,6 @@ const containsUpperCaseCharacter = (password: string) => {
 const containsNumber = (password: string) => {
   return /[0-9]/.test(password);
 };
-
-const validateWithErrorMessage =
-  (validator: ValidatorFunction, errorMessage: ValidationError) =>
-  (password: Password): E.Either<NonEmptyArray<ValidationError>, Password> =>
-    validator(password)
-      ? E.right(password as Password)
-      : E.left([errorMessage]);
 
 const isLongerThanWithErrorMessage = validateWithErrorMessage(
   isLongerThan(6),
@@ -48,13 +37,15 @@ const validators = [
   containsNumberWithErrorMessage,
 ];
 
-const validationResults = (password: string) =>
+export const validatePassword = (password: string) =>
   pipe(
     validators,
     pipe(password, A.of, A.ap),
     A.sequence(E.getApplicativeValidation(getSemigroup<string>())),
-    E.map(val => val[0])
+    E.map((val) => val[0])
   );
 
-const success = validationResults('jerereje5je!!SfE');
-const failure = validationResults('bad');
+const trace = <A>(a: A) => {
+  console.log(new Date(), a);
+  return a;
+};
